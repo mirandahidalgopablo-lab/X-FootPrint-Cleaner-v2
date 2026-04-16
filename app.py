@@ -30,7 +30,7 @@ def analyze_batch():
         if not tweets:
             return jsonify({"ids_polemicos": []})
 
-        modelo = genai.GenerativeModel("gemini-1.5-flash-latest")
+        modelo = genai.GenerativeModel("gemini-1.5-flash")
         
         lista_tweets = []
         for t in tweets:
@@ -39,7 +39,7 @@ def analyze_batch():
             if txt:
                 lista_tweets.append(f"ID:{tid} | TXT:{txt}")
         
-        prompt = f"""Analiza estos tweets y busca: {', '.join(temas) if temas else 'contenido polemico'}.
+        prompt = f"""Analiza estos tweets y busca: {', '.join(temas) if temas else 'contenido ofensivo'}.
         Responde exclusivamente con el array JSON de IDs de los tweets que coincidan. 
         Si no hay nada, responde [].
         Tweets:
