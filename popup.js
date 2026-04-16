@@ -31,7 +31,10 @@ document.getElementById('btnStart').addEventListener('click', () => {
                     const obj = JSON.parse(match[0]);
                     const t = obj.tweet || obj;
                     if (t.full_text || t.text) {
-                        tweets.push({ id: t.id_str || t.id, texto: t.full_text || t.text });
+                        tweets.push({ 
+                            id: t.id_str || t.id, 
+                            texto: t.full_text || t.text 
+                        });
                     }
                 } catch (err) {}
             }
@@ -39,7 +42,7 @@ document.getElementById('btnStart').addEventListener('click', () => {
         } catch (err) { log("Error procesando archivo", "red"); return; }
 
         const temas = Array.from(document.querySelectorAll('input[name="temas"]:checked')).map(c => c.value);
-        const LOTE = 400; 
+        const LOTE = 100;
 
         for (let i = 0; i < tweets.length; i += LOTE) {
             const lote = tweets.slice(i, i + LOTE);
