@@ -12,8 +12,6 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
-else:
-    print("⚠️ ERROR: No se encontró la variable GEMINI_API_KEY")
 
 @app.route("/")
 def index():
@@ -32,15 +30,20 @@ def analyze_batch():
         if not tweets:
             return jsonify({"ids_polemicos": []})
 
-        modelo = genai.GenerativeModel("gemini-1.5-flash")
-
-        lista_tweets = "\n".join([f"ID:{t['id']} | TXT:{t['texto']}" for t in tweets])
+        modelo = genai.GenerativeModel("gemini-1.5-flash-latest")
+        
+        lista_tweets = []
+        for t in tweets:
+            tid = t.get('id') or t.get('id_str') or "S/N"
+            txt = t.get('texto') or t.get('text') or ""
+            if txt:
+                lista_tweets.append(f"ID:{tid} | TXT:{txt}")
         
         prompt = f"""Analiza estos tweets y busca: {', '.join(temas) if temas else 'contenido polemico'}.
-        Responde exclusivamente con el array JSON de IDs. 
-        Si no hay nada peligroso, responde [].
+        Responde exclusivamente con el array JSON de IDs de los tweets que coincidan. 
+        Si no hay nada, responde [].
         Tweets:
-        {lista_tweets}"""
+        {chr(10).join(lista_tweets)}"""
 
         seguridad = [
             {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
@@ -56,14 +59,12 @@ def analyze_batch():
         )
         
         if not respuesta.candidates or not respuesta.candidates[0].content.parts:
-            print("⚠️ Gemini bloqueó la respuesta por seguridad.")
-            return jsonify({"ids_polemicos": [], "error": "Contenido bloqueado por filtros de Google"}), 200
+            return jsonify({"ids_polemicos": [], "error": "Filtro de seguridad"}), 200
 
         res_text = respuesta.text.strip().replace('```json', '').replace('```', '').strip()
         return jsonify({"ids_polemicos": json.loads(res_text), "error": None})
 
     except Exception as e:
-
         print(f"🔥 ERROR DETALLADO: {str(e)}")
         return jsonify({"error": str(e), "ids_polemicos": []}), 500
 
