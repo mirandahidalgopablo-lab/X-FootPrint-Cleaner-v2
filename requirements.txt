@@ -1,0 +1,5 @@
+flask
+tweepy
+google-generativeai
+gunicorn
+werkzeug
