@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="step-label">Paso 02</div>
-    <h1>Configura el analisis</h1>
-    <p style="font-size: 0.8rem; color: #657786;">La extensión usará tu sesión activa de X para limpiar tu rastro.</p>
+    <span class="step-label">Paso 02</span>
+    <h1>Configura el análisis</h1>
 
     <div class="card">
         <label>Archivo tweets.js</label>
-        <input type="file" id="fileInput" accept=".js,.json">
+        <input type="file" id="fileInput">
     </div>
 
     <div class="card">
-        <label>Palabra específica</label>
-        <input type="text" id="palabraBuscada">
+        <label>Palabra específica (Opcional)</label>
+        <input type="text" id="palabraBuscada" placeholder="Ej: insulto, política...">
     </div>
 
     <div class="card">
@@ -24,13 +24,14 @@
         <div class="checkbox-grid">
             <label class="checkbox-item"><input type="checkbox" name="temas" value="Racismo"><span>Racismo</span></label>
             <label class="checkbox-item"><input type="checkbox" name="temas" value="Machismo"><span>Machismo</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="temas" value="Insultos"><span>Insultos</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="temas" value="Odio"><span>Odio</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="temas" value="Islamofobia"><span>Islamofobia</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="temas" value="Homofobia"><span>Homofobia</span></label>
         </div>
     </div>
 
-    <button id="btnStart" class="btn-primary">Iniciar Escaneo e Inyección</button>
-    <div id="log"></div>
+    <button id="btnStart" class="btn-primary">Iniciar Limpieza</button>
+
+    <div id="log">ESPERANDO ACCIÓN...</div>
 
     <script src="popup.js"></script>
 </body>
